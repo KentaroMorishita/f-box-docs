@@ -1,36 +1,41 @@
 ---
-title: Welcome to Starlight
-description: Get started building your docs site with Starlight.
+title: Welcome to F-Box
+description: Explore the power of F-Box for functional programming and reactive state management.
 template: splash
 hero:
-  tagline: Congrats on setting up a new Starlight project!
+  tagline: Build smarter with F-Box's powerful abstractions!
   image:
-    file: ../../assets/houston.webp
+    file: ../../assets/f-box-logo.jpg
   actions:
-    - text: Example Guide
-      link: /guides/example/
+    - text: Get Started
+      link: /f-box-core/introduction/
       icon: right-arrow
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
-      icon: external
-      variant: minimal
+    - text: Box API Reference
+      link: /f-box-core/reference/box/
+      icon: open-book
 ---
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
-## Next steps
+## Discover F-Box
 
 <CardGrid stagger>
-	<Card title="Update content" icon="pencil">
-		Edit `src/content/docs/index.mdx` to see this page change.
+	<Card title="Learn F-Box" icon="layers">
+		Discover [F-Box](f-box-core/introduction/) to harness functional programming concepts like `Box` and `RBox`.
 	</Card>
-	<Card title="Add new content" icon="add-document">
-		Add Markdown or MDX files to `src/content/docs` to create new pages.
+	<Card title="Explore React Integration" icon="react">
+		Unleash the power of [F-Box React](f-box-react/introduction/) to simplify state management in React.
 	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
+	<Card title="Box API Reference" icon="code">
+		Check out the [Box API Reference](f-box-core/reference/box/) for details on the `Box` abstraction.
 	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
+	<Card title="React Hooks Reference" icon="hook">
+		Learn more about hooks like [useBox](f-box-react/reference/use-box/) and [useRBox](f-box-react/reference/use-rbox/).
+	</Card>
+	<Card title="Guides: useRBox" icon="book">
+		Check out the [useRBox Guide](f-box-react/guides/use-rbox/) for advanced state management patterns.
+	</Card>
+	<Card title="FAQ" icon="question-circle">
+		Find answers in the [FAQ](f-box-core/faq/) for common questions and troubleshooting tips.
 	</Card>
 </CardGrid>
