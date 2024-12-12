@@ -7,8 +7,6 @@ description: Detailed API reference for the Box abstraction in F-Box Core.
 
 ---
 
-## Overview
-
 The `Box` abstraction simplifies handling values in a functional programming style. It ensures immutability and composability, making it ideal for scenarios requiring predictable and side-effect-free operations.
 
 ### Key Features

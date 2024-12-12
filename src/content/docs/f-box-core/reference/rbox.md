@@ -7,8 +7,6 @@ description: Detailed API reference for the RBox abstraction in F-Box.
 
 ---
 
-## Overview
-
 The `RBox` abstraction extends the functionality of `Box` by introducing reactivity. It allows you to subscribe to updates, propagate changes to derived `RBox` instances, and manage dependencies.
 
 ### Key Features
