@@ -440,7 +440,7 @@ The `Maybe` abstraction provides a consistent and type-safe way to handle option
 
 Explore other abstractions built on `Maybe`:
 
-- **[Box](./box)**: A foundational abstraction for encapsulating values.
-- **[RBox](./rbox)**: A reactive extension of `Box`.
-- **[Either](./either)**: Represents computations with success or failure.
-- **[Task](./task)**: Manages asynchronous workflows.
+- **[Box](/f-box-core/reference/box)**: A foundational abstraction for encapsulating values.
+- **[RBox](/f-box-core/reference/rbox)**: A reactive extension of `Box`.
+- **[Either](/f-box-core/reference/either)**: Represents computations with success or failure.
+- **[Task](/f-box-core/reference/task)**: Manages asynchronous workflows.

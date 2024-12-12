@@ -314,7 +314,7 @@ The `RBox` abstraction provides a robust way to manage reactive state with minim
 
 Explore other abstractions built on `Box` and `RBox`:
 
-- **[Box](./box)**: The foundational abstraction for encapsulating values.
-- **[Maybe](./maybe)**: A container for optional values.
-- **[Either](./either)**: Encapsulates computations with success or failure.
-- **[Task](./task)**: Handles asynchronous workflows.
+- **[Box](/f-box-core/reference/box)**: The foundational abstraction for encapsulating values.
+- **[Maybe](/f-box-core/reference/maybe)**: A container for optional values.
+- **[Either](/f-box-core/reference/either)**: Encapsulates computations with success or failure.
+- **[Task](/f-box-core/reference/task)**: Handles asynchronous workflows.

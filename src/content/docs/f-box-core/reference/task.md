@@ -340,7 +340,7 @@ The `Task` abstraction provides a powerful framework for managing asynchronous w
 
 Explore other abstractions in F-Box:
 
-- **[Box](./box)**: A foundational abstraction for encapsulating values.
-- **[RBox](./rbox)**: A reactive extension of `Box`.
-- **[Maybe](./maybe)**: Represents optional values.
-- **[Either](./either)**: Represents computations with success or failure.
+- **[Box](/f-box-core/reference/box)**: A foundational abstraction for encapsulating values.
+- **[RBox](/f-box-core/reference/rbox)**: A reactive extension of `Box`.
+- **[Maybe](/f-box-core/reference/maybe)**: Represents optional values.
+- **[Either](/f-box-core/reference/either)**: Represents computations with success or failure.

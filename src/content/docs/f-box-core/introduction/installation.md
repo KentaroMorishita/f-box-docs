@@ -68,7 +68,7 @@ console.log(boxB.getValue()); // 20
 
 ## What's Next?
 
-- **[Key Concepts](./concepts)**: Learn about the core abstractions provided by F-Box.
-- **[API Reference](../reference/box)**: Explore the detailed documentation for `Box` and other modules.
+- **[Key Concepts](/f-box-core/introduction/concepts)**: Learn about the core abstractions provided by F-Box.
+- **[API Reference](/f-box-core/reference/box)**: Explore the detailed documentation for `Box` and other modules.
 
 With these steps, you're ready to start building robust and maintainable applications using F-Box!

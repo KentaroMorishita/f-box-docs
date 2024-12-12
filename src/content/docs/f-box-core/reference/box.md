@@ -205,7 +205,7 @@ The `Box` abstraction is a lightweight and intuitive tool for functional program
 
 Explore other abstractions built on `Box`:
 
-- **[RBox](./rbox)**: A reactive state container based on `Box`.
-- **[Maybe](./maybe)**: A container for optional values.
-- **[Either](./either)**: Encapsulates computations with success or failure.
-- **[Task](./task)**: Handles asynchronous workflows.
+- **[RBox](/f-box-core/reference/rbox)**: A reactive state container based on `Box`.
+- **[Maybe](/f-box-core/reference/maybe)**: A container for optional values.
+- **[Either](/f-box-core/reference/either)**: Encapsulates computations with success or failure.
+- **[Task](/f-box-core/reference/task)**: Handles asynchronous workflows.

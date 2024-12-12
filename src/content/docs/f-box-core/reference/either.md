@@ -391,7 +391,7 @@ The `Either` abstraction offers a robust framework for handling computations tha
 
 Explore other abstractions in F-Box:
 
-- **[Box](./box)**: A foundational abstraction for encapsulating values.
-- **[RBox](./rbox)**: A reactive extension of `Box`.
-- **[Maybe](./maybe)**: Represents optional values.
-- **[Task](./task)**: Manages asynchronous workflows.
+- **[Box](/f-box-core/reference/box)**: A foundational abstraction for encapsulating values.
+- **[RBox](/f-box-core/reference/rbox)**: A reactive extension of `Box`.
+- **[Maybe](/f-box-core/reference/maybe)**: Represents optional values.
+- **[Task](/f-box-core/reference/task)**: Manages asynchronous workflows.

@@ -26,9 +26,9 @@ Modern applications often require handling complex state, asynchronous flows, an
 
 ## Next Steps
 
-- **[Installation Guide](./introduction/installation)**: Learn how to install F-Box in your project.
-- **[Key Concepts](./introduction/concepts)**: Dive deeper into the core abstractions and how to use them effectively.
-- **[API Reference](./reference/box)**: Explore the detailed API documentation for F-Box features.
+- **[Installation Guide](/f-box-core/introduction/installation)**: Learn how to install F-Box in your project.
+- **[Key Concepts](/f-box-core/introduction/concepts)**: Dive deeper into the core abstractions and how to use them effectively.
+- **[API Reference](/f-box-core/reference/box)**: Explore the detailed API documentation for F-Box features.
 
 ---
 
