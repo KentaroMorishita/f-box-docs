@@ -4,7 +4,7 @@ import starlight from "@astrojs/starlight"
 export default defineConfig({
   integrations: [
     starlight({
-      title: "F-Box Documentation",
+      title: "F-Box",
       social: {
         github: "https://github.com/KentaroMorishita/f-box-core",
       },
