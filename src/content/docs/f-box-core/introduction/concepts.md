@@ -140,8 +140,8 @@ F-Box is built around these operators to ensure consistency and predictability a
 
 Now that you understand the core operators of F-Box, explore their specific implementations in different abstractions:
 
-- **[Box](../reference/box/)**: The simplest and foundational container in F-Box.
-- **[RBox](../reference/rbox/)**: Reactive state management built on `Box`.
-- **[Maybe](../reference/maybe/)**: Handling optional values with safety.
-- **[Either](../reference/either/)**: Representing success or failure explicitly.
-- **[Task](../reference/task/)**: Managing asynchronous workflows with ease.
+- **[Box](../reference/box)**: The simplest and foundational container in F-Box.
+- **[RBox](../reference/rbox)**: Reactive state management built on `Box`.
+- **[Maybe](../reference/maybe)**: Handling optional values with safety.
+- **[Either](../reference/either)**: Representing success or failure explicitly.
+- **[Task](../reference/task)**: Managing asynchronous workflows with ease.

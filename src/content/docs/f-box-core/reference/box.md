@@ -1,9 +1,9 @@
 ---
 title: Box
-description: Detailed API reference for the Box abstraction in F-Box Core.
+description: Detailed API reference for the Box abstraction in F-Box.
 ---
 
-`Box` is a foundational abstraction in F-Box Core. It encapsulates a single value and provides a functional interface for transforming, combining, and chaining operations.
+`Box` is a foundational abstraction in F-Box. It encapsulates a single value and provides a functional interface for transforming, combining, and chaining operations.
 
 ---
 
