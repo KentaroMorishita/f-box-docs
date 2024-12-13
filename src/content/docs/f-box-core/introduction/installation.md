@@ -9,7 +9,7 @@ F-Box is designed with TypeScript as its primary language, offering robust type 
 
 Before you start, ensure your development environment meets the following requirements:
 
-- **Node.js**: Version 14 or later.
+- **Node.js**: Version 16.8.0 or later.
 - **npm** or **yarn**: A package manager for JavaScript.
 - **TypeScript**: Version 4.0 or later.
 
@@ -21,7 +21,7 @@ npm install typescript --save-dev
 
 ## Installation Steps
 
-### 1. Install the F-Box Package
+### Install the F-Box Package
 
 To install F-Box, run the following command:
 
@@ -33,37 +33,18 @@ npm install f-box-core
 yarn add f-box-core
 ```
 
-### 2. Configure TypeScript (if needed)
 
-If you don't already have a `tsconfig.json` file, create one using:
-
-```bash
-npx tsc --init
-```
-
-This file allows you to customize TypeScript's behavior. F-Box works out-of-the-box with the default configuration.
-
-### 3. Verify Installation
-
-To verify the package is installed correctly, run:
-
-```bash
-npm list f-box-core
-```
-
-You should see the installed version of F-Box listed.
-
-### 4. Start Using F-Box
+### Start Using F-Box
 
 Here's an example of using F-Box in TypeScript:
 
 ```typescript
-import { Box } from 'f-box-core';
+import { Box } from "f-box-core"
 
-const boxA = Box.pack<number>(10);
-const boxB = boxA["<$>"]((x) => x * 2);
-console.log(boxA.getValue()); // 10
-console.log(boxB.getValue()); // 20
+const boxA = Box.pack<number>(10)
+const boxB = boxA["<$>"]((x) => x * 2)
+console.log(boxA.getValue()) // 10
+console.log(boxB.getValue()) // 20
 ```
 
 ## What's Next?
