@@ -33,7 +33,6 @@ npm install f-box-core
 yarn add f-box-core
 ```
 
-
 ### Start Using F-Box
 
 Here's an example of using F-Box in TypeScript:

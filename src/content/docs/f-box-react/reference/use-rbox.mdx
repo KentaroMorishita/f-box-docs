@@ -1,0 +1,187 @@
+---
+title: useRBox
+description: Detailed API reference for the useRBox hook in F-Box React.
+---
+
+`useRBox` is a React hook that bridges the `RBox` abstraction from F-Box with React's ecosystem. It allows you to manage reactive state in React components with a declarative and functional programming approach.
+
+---
+
+The `useRBox` hook integrates the reactivity of `RBox` with React, enabling seamless state management for both local and global states. It leverages React's `useSyncExternalStore` for efficient updates and guarantees type safety with TypeScript.
+
+### Key Features
+
+- **Integration with `RBox`**: Manage reactive state directly in React components.
+- **Global and Local State**: Supports both global shared state and component-specific state.
+- **Type Safety**: Offers strong TypeScript support for predictable and error-free development.
+
+---
+
+## Creating a `useRBox` Hook
+
+To use `useRBox`, pass either an initial value, an `RBox` instance, or a function that returns a value or `RBox`.
+
+### Example
+
+```tsx
+import React from "react"
+import { useRBox } from "f-box-react"
+
+const Counter = () => {
+  const [count, countBox] = useRBox(0)
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => countBox.setValue(count + 1)}>Increment</button>
+    </div>
+  )
+}
+```
+
+---
+
+## Supported Patterns
+
+### Local Reactive State
+
+Use `useRBox` to manage component-specific state.
+
+```tsx
+const [count, countBox] = useRBox(0)
+countBox.setValue((prev) => prev + 1)
+```
+
+### Global Reactive State
+
+Use `useRBox` with a shared `RBox` to manage state across multiple components.
+
+```tsx
+// globalState.ts
+import { RBox } from "f-box-core"
+export const counterBox = RBox.pack(0)
+```
+
+```tsx
+// CounterDisplay.tsx
+import React from "react"
+import { useRBox } from "f-box-react"
+import { counterBox } from "./globalState"
+
+const CounterDisplay = () => {
+  const [count] = useRBox(counterBox)
+  return <p>Global Count: {count}</p>
+}
+```
+
+```tsx
+// CounterControls.tsx
+import React from "react"
+import { counterBox } from "./globalState"
+
+const CounterControls = () => {
+  const increment = () => counterBox.setValue((count) => count + 1)
+
+  return <button onClick={increment}>Increment Global Count</button>
+}
+```
+
+---
+
+## API Methods
+
+### useRBox
+
+#### `useRBox<T>(source: T | RBox<T> | (() => T | RBox<T>), deps?: React.DependencyList): [T, RBox<T>]`
+
+Creates an `RBox` and returns its value along with the `RBox` instance.
+
+#### Parameters
+
+- **`source`**:
+  - An initial value, an `RBox` instance, or a function returning a value or `RBox`.
+- **`deps`**:
+  - A dependency array for memoization. The `RBox` is recomputed when dependencies change.
+
+#### Returns
+
+- **`value`**:
+  - The current value encapsulated in the `RBox`.
+- **`rbox`**:
+  - The `RBox` instance itself.
+
+---
+
+## Use Cases
+
+### Using `RBox` for Local State
+
+Manage local reactive state within a single component.
+
+```tsx
+const Counter = () => {
+  const [count, countBox] = useRBox(0)
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => countBox.setValue((prev) => prev + 1)}>
+        Increment
+      </button>
+    </div>
+  )
+}
+```
+
+### Using `RBox` for Global State
+
+Share state across multiple components using `RBox`.
+
+```tsx
+// globalState.ts
+import { RBox } from "f-box-core"
+export const counterBox = RBox.pack(0)
+```
+
+#### Access it in different components:
+
+```tsx
+// CounterDisplay.tsx
+import React from "react"
+import { useRBox } from "f-box-react"
+import { counterBox } from "./globalState"
+
+const CounterDisplay = () => {
+  const [count] = useRBox(counterBox)
+  return <p>Global Count: {count}</p>
+}
+```
+
+```tsx
+// CounterControls.tsx
+import React from "react"
+import { counterBox } from "./globalState"
+
+const CounterControls = () => {
+  const increment = () => counterBox.setValue((count) => count + 1)
+
+  return <button onClick={increment}>Increment Global Count</button>
+}
+```
+
+---
+
+## Why Use `useRBox`?
+
+The `useRBox` hook provides a powerful and type-safe way to manage state in React applications. It combines the reactivity of `RBox` with React's component-based architecture, making it ideal for building scalable and maintainable applications.
+
+---
+
+## Next Steps
+
+Explore related topics to deepen your understanding:
+
+- **[RBox API Reference](/f-box-core/reference/rbox)**: Learn about the `RBox` abstraction in F-Box Core.
+- **[useBox Reference](/f-box-react/reference/use-box)**: Understand how to work with static values in React using `useBox`.
+- **[useRBox Guide](/f-box-react/guides/use-rbox)**: Dive into advanced usage patterns for `useRBox`.
+````

@@ -1,0 +1,159 @@
+---
+title: useBox
+description: Detailed API reference for the useBox hook in F-Box React.
+---
+
+`useBox` is a React hook that bridges the `Box` abstraction from F-Box Core with React's ecosystem. It allows you to work with encapsulated values in a functional and React-friendly way.
+
+---
+
+The `useBox` hook simplifies managing static or derived values in React components. By integrating the `Box` abstraction, it ensures immutability and composability while maintaining React's declarative nature.
+
+### Key Features
+
+- **Integration with `Box`**: Access and transform `Box` values directly in React components.
+- **Memoization**: Avoid unnecessary computations with dependency-based reactivity.
+- **Type Safety**: Enjoy strong TypeScript support for predictable and error-free usage.
+
+---
+
+## Creating a `useBox` Hook
+
+To use `useBox`, pass either a static value, a `Box` instance, or a function that returns a value or `Box`.
+
+### Example
+
+```tsx
+import React from "react"
+import { useBox } from "f-box-react"
+
+const Counter = () => {
+  const [count, countBox] = useBox(0)
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => console.log(countBox.getValue())}>
+        Log Count
+      </button>
+    </div>
+  )
+}
+```
+
+---
+
+## Supported Patterns
+
+### Static Values
+
+You can pass a static value to initialize the `Box`.
+
+```tsx
+const [value, box] = useBox(10)
+console.log(value) // Outputs: 10
+console.log(box.getValue()) // Outputs: 10
+```
+
+### Derived Values
+
+Use a function to derive the `Box` value dynamically.
+
+```tsx
+const [derivedValue, derivedBox] = useBox(() =>
+  Box.pack(10)["<$>"]((x) => x * 2)
+)
+console.log(derivedValue) // Outputs: 20
+console.log(derivedBox.getValue()) // Outputs: 20
+```
+
+### Using an Existing `Box`
+
+If you already have a `Box`, pass it directly to `useBox`.
+
+```tsx
+import { Box } from "f-box-core"
+
+const globalBox = Box.pack(100)
+
+const Component = () => {
+  const [value] = useBox(globalBox)
+  return <p>Value: {value}</p>
+}
+```
+
+---
+
+## API Methods
+
+### useBox
+
+#### `useBox<T>(source: T | Box<T> | (() => T | Box<T>), deps?: React.DependencyList): [T, Box<T>]`
+
+Creates a `Box` and returns its value along with the `Box` instance.
+
+#### Parameters
+
+- **`source`**:
+  - A static value, a `Box` instance, or a function returning a value or `Box`.
+- **`deps`**:
+  - A dependency array for memoization. The `Box` is recomputed when dependencies change.
+
+#### Returns
+
+- **`value`**:
+  - The current value encapsulated in the `Box`.
+- **`box`**:
+  - The `Box` instance itself.
+
+---
+
+## Use Cases
+
+### Using `Box` for Static Configurations
+
+`useBox` is ideal for managing global or static configurations that do not require frequent updates.
+
+```tsx
+const configBox = Box.pack({ darkMode: true, language: "en" })
+
+const ConfigDisplay = () => {
+  const [config] = useBox(configBox)
+  return <p>Dark Mode: {config.darkMode ? "On" : "Off"}</p>
+}
+```
+
+### Deriving Component-Specific Values
+
+Customize a global `Box` for component-specific behavior.
+
+```tsx
+const themeBox = Box.pack({ fontSize: 14, color: "blue" })
+
+const ThemedComponent = () => {
+  const [theme] = useBox(() =>
+    themeBox["<$>"]((theme) => ({
+      ...theme,
+      color: "red", // Override color for this component
+    }))
+  )
+
+  return <p style={{ color: theme.color }}>Themed Text</p>
+}
+```
+
+---
+
+## Why Use `useBox`?
+
+The `useBox` hook is a lightweight way to integrate functional programming with React. It allows you to encapsulate, transform, and reuse values across components while adhering to React's declarative principles.
+
+---
+
+## Next Steps
+
+Explore related topics to deepen your understanding:
+
+- **[Box API Reference](/f-box-core/reference/box)**: Learn about the `Box` abstraction in F-Box Core.
+- **[useRBox Reference](/f-box-react/reference/use-rbox)**: Manage reactive state efficiently with `useRBox`.
+- **[useBox Guide](/f-box-react/guides/use-box)**: Dive into advanced usage patterns for `useBox`.

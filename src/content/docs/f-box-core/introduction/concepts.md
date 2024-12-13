@@ -22,24 +22,24 @@ The `<$>` operator applies a function to the value inside a container, producing
 Using the operator:
 
 ```typescript
-import { Box } from 'f-box-core';
+import { Box } from "f-box-core"
 
-const box = Box.pack<number>(10);
-const transformedBox = box["<$>"]((x) => x * 2);
+const box = Box.pack<number>(10)
+const transformedBox = box["<$>"]((x) => x * 2)
 
-console.log(box.getValue());         // 10
-console.log(transformedBox.getValue()); // 20
+console.log(box.getValue()) // 10
+console.log(transformedBox.getValue()) // 20
 ```
 
 Using the method:
 
 ```typescript
-import { Box } from 'f-box-core';
+import { Box } from "f-box-core"
 
-const box = Box.pack<number>(10);
-const transformedBox = box.map((x) => x * 2);
+const box = Box.pack<number>(10)
+const transformedBox = box.map((x) => x * 2)
 
-console.log(transformedBox.getValue()); // 20
+console.log(transformedBox.getValue()) // 20
 ```
 
 #### Key Points
@@ -59,25 +59,25 @@ The `<*>` operator combines a container holding a function with another containe
 Using the operator:
 
 ```typescript
-import { Box } from 'f-box-core';
+import { Box } from "f-box-core"
 
-const boxFn = Box.pack<(x: number) => number>((x) => x * 2);
-const boxValue = Box.pack<number>(10);
-const resultBox = boxFn["<*>"](boxValue);
+const boxFn = Box.pack<(x: number) => number>((x) => x * 2)
+const boxValue = Box.pack<number>(10)
+const resultBox = boxFn["<*>"](boxValue)
 
-console.log(resultBox.getValue()); // 20
+console.log(resultBox.getValue()) // 20
 ```
 
 Using the method:
 
 ```typescript
-import { Box } from 'f-box-core';
+import { Box } from "f-box-core"
 
-const boxFn = Box.pack<(x: number) => number>((x) => x * 2);
-const boxValue = Box.pack<number>(10);
-const resultBox = boxFn.apply(boxValue);
+const boxFn = Box.pack<(x: number) => number>((x) => x * 2)
+const boxValue = Box.pack<number>(10)
+const resultBox = boxFn.apply(boxValue)
 
-console.log(resultBox.getValue()); // 20
+console.log(resultBox.getValue()) // 20
 ```
 
 #### Key Points
@@ -97,23 +97,23 @@ The `>>=` operator, also known as `FlatMap`, chains computations that return new
 Using the operator:
 
 ```typescript
-import { Box } from 'f-box-core';
+import { Box } from "f-box-core"
 
-const box = Box.pack<number>(10);
-const chainedBox = box[">>="]((x) => Box.pack(x * 2));
+const box = Box.pack<number>(10)
+const chainedBox = box[">>="]((x) => Box.pack(x * 2))
 
-console.log(chainedBox.getValue()); // 20
+console.log(chainedBox.getValue()) // 20
 ```
 
 Using the method:
 
 ```typescript
-import { Box } from 'f-box-core';
+import { Box } from "f-box-core"
 
-const box = Box.pack<number>(10);
-const chainedBox = box.flatMap((x) => Box.pack(x * 2));
+const box = Box.pack<number>(10)
+const chainedBox = box.flatMap((x) => Box.pack(x * 2))
 
-console.log(chainedBox.getValue()); // 20
+console.log(chainedBox.getValue()) // 20
 ```
 
 #### Key Points

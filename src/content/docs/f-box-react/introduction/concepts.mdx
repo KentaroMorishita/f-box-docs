@@ -1,0 +1,79 @@
+---
+title: Key Concepts
+description: Overview of the foundational concepts in F-Box React, including `useBox` and `useRBox`.
+---
+
+F-Box React builds on the functional programming principles of F-Box, extending its capabilities to React applications. This section provides an overview of the core concepts and primary hooks used in F-Box React.
+
+---
+
+## Core Hooks
+
+F-Box React introduces two primary hooks to integrate functional programming abstractions into React components:
+
+1. **`useBox`**: Access and transform immutable values encapsulated in a `Box`.
+2. **`useRBox`**: Manage reactive state with `RBox`, enabling seamless state updates and synchronization across components.
+
+---
+
+## Quick Overview
+
+### `useBox`
+
+The `useBox` hook allows React components to access and transform values stored in a `Box`. It is particularly useful for working with static or derived data that doesn't require frequent updates.
+
+#### Example
+
+```tsx
+import React from "react"
+import { useBox } from "f-box-react"
+import { Box } from "f-box-core"
+
+const themeBox = Box.pack({ color: "blue", fontSize: 16 })
+
+const ThemedComponent = () => {
+  const [theme] = useBox(themeBox)
+
+  return (
+    <div style={{ color: theme.color, fontSize: theme.fontSize }}>
+      Themed Text
+    </div>
+  )
+}
+```
+
+---
+
+### `useRBox`
+
+The `useRBox` hook provides reactive state management in React, acting as a powerful alternative to `useState` for local and global state management.
+
+#### Example
+
+```tsx
+import React from "react"
+import { useRBox } from "f-box-react"
+
+const Counter = () => {
+  const [count, countBox] = useRBox(0)
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => countBox.setValue(count + 1)}>Increment</button>
+    </div>
+  )
+}
+```
+
+---
+
+## What's Next?
+
+- **[useBox Guide](/f-box-react/guides/use-box)**: Learn advanced usage patterns for `useBox`.
+- **[useRBox Guide](/f-box-react/guides/use-rbox)**: Explore how to manage reactive state effectively with `useRBox`.
+- **[API Reference](/f-box-react/reference/use-box)**: Dive into the detailed API documentation for F-Box React features.
+
+---
+
+This overview provides a starting point for understanding `useBox` and `useRBox`. For deeper insights and advanced use cases, explore the guides and reference sections.
