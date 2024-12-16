@@ -1,6 +1,181 @@
 ---
 title: useRBoxForm
-description: Detailed API reference for the useRBoxForm hook.
+description: Detailed API reference for the useRBoxForm hook in F-Box React.
 ---
 
-Content goes here...
+`useRBoxForm` is a React hook that simplifies form state management by combining the power of `RBox` with validation, error handling, and utility functions. It is ideal for building reactive and type-safe forms in React applications.
+
+---
+
+The `useRBoxForm` hook allows you to manage form state reactively, validate inputs, and handle errors with ease. It leverages F-Box's `RBox` abstraction to ensure that all form-related states are synchronized and reactive.
+
+### Key Features
+
+- **Reactive Form State**: Automatically synchronize form fields and validation state.
+- **Built-in Validation**: Simplify input validation with flexible rules.
+- **Error Rendering**: Dynamically render error messages for invalid fields.
+- **Type Safety**: Provides strong TypeScript support for predictable development.
+
+---
+
+## Creating a `useRBoxForm` Hook
+
+To use `useRBoxForm`, pass initial form values and a validation function that defines validation rules for each field.
+
+### Example
+
+```tsx
+import React from "react"
+import { useRBoxForm } from "f-box-react"
+
+type Form = {
+  name: string
+  email: string
+  message: string
+}
+
+const initialValues: Form = { name: "", email: "", message: "" }
+
+const validate = (form: Form) => ({
+  name: [
+    () => form.name.trim().length >= 3, // Name must be at least 3 characters
+    () => /^[a-zA-Z]+$/.test(form.name), // Name must only contain letters
+  ],
+  email: [
+    () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email), // Valid email format
+  ],
+  message: [
+    () => form.message.trim().length >= 10, // Message must be at least 10 characters
+  ],
+})
+
+function ContactForm() {
+  const { form, handleChange, handleValidatedSubmit, renderErrorMessages } =
+    useRBoxForm<Form>(initialValues, validate)
+
+  const handleSubmit = handleValidatedSubmit((form) => {
+    alert(`Form submitted successfully!\n${JSON.stringify(form, null, 2)}`)
+  })
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        Name:
+        <input
+          value={form.name}
+          onChange={(e) => handleChange("name", e.target.value)}
+        />
+        {renderErrorMessages("name", [
+          "Name must be at least 3 characters.",
+          "Name must only contain letters.",
+        ])}
+      </label>
+      <label>
+        Email:
+        <input
+          value={form.email}
+          onChange={(e) => handleChange("email", e.target.value)}
+        />
+        {renderErrorMessages("email", ["Invalid email format."])}
+      </label>
+      <label>
+        Message:
+        <textarea
+          value={form.message}
+          onChange={(e) => handleChange("message", e.target.value)}
+        />
+        {renderErrorMessages("message", [
+          "Message must be at least 10 characters.",
+        ])}
+      </label>
+      <button type="submit">Submit</button>
+    </form>
+  )
+}
+
+export default ContactForm
+```
+
+---
+
+## Supported Patterns
+
+### Validating and Rendering Errors
+
+Use the `validate` function to define rules for each field. Use `renderErrorMessages` to dynamically display error messages.
+
+```tsx
+const validate = (form: Form) => ({
+  name: [
+    () => form.name.trim().length >= 3, // Minimum length
+    () => /^[a-zA-Z]+$/.test(form.name), // Only letters
+  ],
+})
+
+{
+  renderErrorMessages("name", [
+    "Name must be at least 3 characters.",
+    "Name must only contain letters.",
+  ])
+}
+```
+
+### Resetting and Marking Fields
+
+- **`resetForm`**: Resets the form to its initial state.
+- **`markAllEdited`**: Marks all fields as edited.
+
+```tsx
+const { resetForm, markAllEdited } = useRBoxForm(initialValues, validate);
+
+<button onClick={resetForm}>Reset</button>
+<button onClick={markAllEdited}>Mark All Edited</button>
+```
+
+---
+
+## API Methods
+
+### `useRBoxForm`
+
+#### `useRBoxForm<T>(initialValues: T, validate: (form: T) => Validation<T>): UseRBoxFormResult<T>`
+
+Creates a reactive form state with validation rules.
+
+#### Parameters
+
+- **`initialValues`**:
+  - An object defining the initial values for the form fields.
+- **`validate`**:
+  - A function returning validation rules as an object where each key is a field name, and the value is an array of validation functions.
+
+#### Returns
+
+- **`form`**:
+  - The current form state.
+- **`handleChange`**:
+  - Updates the value of a specific field and marks it as edited.
+- **`handleValidatedSubmit`**:
+  - Handles form submission with validation.
+- **`renderErrorMessages`**:
+  - Dynamically renders error messages for a specific field.
+- **`resetForm`**:
+  - Resets the form to its initial state.
+- **`markAllEdited`**:
+  - Marks all fields as edited.
+
+---
+
+## Why Use `useRBoxForm`?
+
+The `useRBoxForm` hook combines F-Box's reactive state management with powerful validation and error handling capabilities. It simplifies form handling in React applications, ensuring clean, type-safe, and maintainable code.
+
+---
+
+## Next Steps
+
+Explore related topics to deepen your understanding:
+
+- **[RBox API Reference](/f-box-core/reference/rbox)**: Learn about the `RBox` abstraction in F-Box Core.
+- **[useBox Reference](/f-box-react/reference/use-box)**: Understand how to work with static values in React using `useBox`.
+- **[useRBox Guide](/f-box-react/guides/use-rbox)**: Dive into advanced usage patterns for `useRBox`.

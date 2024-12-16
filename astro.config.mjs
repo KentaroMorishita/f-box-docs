@@ -44,17 +44,6 @@ export default defineConfig({
               slug: "f-box-react/introduction/concepts",
             },
             {
-              label: "Guides",
-              items: [
-                { label: "useBox", slug: "f-box-react/guides/use-box" },
-                { label: "useRBox", slug: "f-box-react/guides/use-rbox" },
-                {
-                  label: "useRBoxForm",
-                  slug: "f-box-react/guides/use-rbox-form",
-                },
-              ],
-            },
-            {
               label: "Reference",
               items: [
                 { label: "useBox", slug: "f-box-react/reference/use-box" },
@@ -62,6 +51,17 @@ export default defineConfig({
                 {
                   label: "useRBoxForm",
                   slug: "f-box-react/reference/use-rbox-form",
+                },
+              ],
+            },
+            {
+              label: "Guides",
+              items: [
+                { label: "useBox", slug: "f-box-react/guides/use-box" },
+                { label: "useRBox", slug: "f-box-react/guides/use-rbox" },
+                {
+                  label: "useRBoxForm",
+                  slug: "f-box-react/guides/use-rbox-form",
                 },
               ],
             },
