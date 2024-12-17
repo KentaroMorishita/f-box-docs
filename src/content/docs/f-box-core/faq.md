@@ -1,5 +1,5 @@
 ---
-title: FAQ
+title: F-Box FAQ
 description: Frequently Asked Questions about F-Box.
 ---
 

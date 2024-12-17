@@ -235,7 +235,7 @@ import { useRBox, set } from "f-box-react"
 import { themeBox } from "./globalState"
 
 function ThemeToggle() {
-  const [theme, themeBox] = useRBox(themeBox)
+  const [theme] = useRBox(themeBox)
   const setTheme = set(themeBox)
 
   const toggleTheme = () => setTheme(theme === "light" ? "dark" : "light")
@@ -259,7 +259,7 @@ import { useRBox, set } from "f-box-react"
 import { settingsBox } from "./globalState"
 
 function SettingsManager() {
-  const [settings, settingsBox] = useRBox(settingsBox)
+  const [settings] = useRBox(settingsBox)
   const setSettings = set(settingsBox)
 
   const toggleNotifications = () =>
