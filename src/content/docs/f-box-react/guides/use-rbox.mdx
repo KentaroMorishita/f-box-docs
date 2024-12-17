@@ -1,6 +1,394 @@
 ---
 title: useRBox Guide
-description: A guide to using the useRBox hook in F-Box React.
+subtitle: Advanced Reactive State Management in React
+description: A comprehensive guide to using the useRBox hook in F-Box, covering reactive state management, dependency handling, and advanced use cases in React applications.
 ---
 
-Content goes here...
+`useRBox` is a powerful React hook provided by F-Box that simplifies reactive state management. By integrating the `RBox` abstraction with React's lifecycle, `useRBox` enables seamless handling of dynamic and dependent states with a declarative approach.
+
+---
+
+## Why Choose `useRBox`?
+
+`useRBox` is optimized for **reactive and dynamic states** that change based on user interactions or external events. It ensures:
+
+- **Automatic state synchronization** across components.
+- **Declarative dependency management** using operators like `<$>` and `<*>`.
+- **Type-safe reactivity** with strong TypeScript support.
+- Integration with React's `useSyncExternalStore` for efficient updates.
+
+For **static or immutable states**, consider using **[useBox](/f-box-react/guides/use-box)** instead.
+
+---
+
+## Key Benefits of `useRBox`
+
+1. **Reactive State Synchronization**: Automatically updates components when state changes.
+2. **Declarative Dependencies**: Use functional operators to manage dependencies and transformations.
+3. **Global and Local State**: Manage both shared state and component-specific state with ease.
+4. **Integration with F-Box**: Combine `useRBox` with other F-Box abstractions like `Task` and `Either` for advanced use cases.
+
+---
+
+## Practical Use Cases
+
+### 1. Managing Reactive State
+
+Use `useRBox` to manage state that reacts to user interactions or external events.
+
+#### Code Example
+
+```tsx
+// Counter.tsx
+import { useRBox, set } from "f-box-react"
+
+function Counter() {
+  const [count, countBox] = useRBox(0)
+  const setCount = set(countBox)
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+      <button onClick={() => setCount(count - 1)}>Decrement</button>
+    </div>
+  )
+}
+
+export default Counter
+```
+
+#### Explanation
+
+- `countBox` acts as a reactive state encapsulating the count value.
+- The `set` function, which is curried, updates the value reactively.
+- Components using `useRBox` automatically re-render when the state changes.
+
+---
+
+### 2. Derived Reactive State
+
+Create derived states using the `map` operator `<$>` to transform `RBox` values.
+
+#### Code Example
+
+```tsx
+// DerivedStateExample.tsx
+import { useRBox, set } from "f-box-react"
+
+function DerivedStateExample() {
+  const [base, baseBox] = useRBox(10)
+  const setBase = set(baseBox)
+
+  const [double] = useRBox(() => baseBox["<$>"]((x) => x * 2))
+  const [triple] = useRBox(() => baseBox["<$>"]((x) => x * 3))
+
+  return (
+    <div>
+      <p>Base: {base}</p>
+      <p>Double: {double}</p>
+      <p>Triple: {triple}</p>
+      <button onClick={() => setBase(base + 1)}>Base Increment</button>
+    </div>
+  )
+}
+
+export default DerivedStateExample
+```
+
+#### Explanation
+
+- `baseBox` holds the base value.
+- Derived states `double` and `triple` are computed reactively using the `<$>` operator.
+- Any change to `baseBox` propagates automatically to derived states.
+
+---
+
+### 3. Combining Reactive States
+
+Combine multiple `RBox` instances using `<*>` to create complex derived states.
+
+#### Code Example
+
+```tsx
+// CombinedStateExample.tsx
+import { RBox } from "f-box-core"
+import { useRBox, set } from "f-box-react"
+
+function CombinedStateExample() {
+  const [x, xBox] = useRBox(5)
+  const [y, yBox] = useRBox(10)
+  const setX = set(xBox)
+  const setY = set(yBox)
+
+  const [sum] = useRBox(() =>
+    RBox.pack((a: number) => (b: number) => a + b)
+      ["<*>"](xBox)
+      ["<*>"](yBox)
+  )
+
+  return (
+    <div>
+      <p>X: {x}</p>
+      <p>Y: {y}</p>
+      <p>Sum: {sum}</p>
+      <button onClick={() => setX(x + 1)}>X Increment</button>
+      <button onClick={() => setY(y + 1)}>Y Increment</button>
+    </div>
+  )
+}
+
+export default CombinedStateExample
+```
+
+#### Explanation
+
+- `xBox` and `yBox` encapsulate independent reactive values.
+- A curried addition function `(a) => (b) => a + b` is combined with the two `RBox` values using `<*>`.
+- Changes to either `xBox` or `yBox` automatically trigger an update to `sum`.
+
+---
+
+### 4. Combining `Task.tryCatch` and `Either` for Error Handling
+
+Handle asynchronous tasks and errors declaratively with `Task.tryCatch` and `Either`.
+
+#### Code Example
+
+```tsx
+// DataFetcher.tsx
+import { useRBox, set } from "f-box-react"
+import { Task, Either } from "f-box-core"
+
+export type Data = { id: number; body: string }
+
+function fetchDataTask() {
+  return Task.tryCatch(
+    () =>
+      fetch("https://api.example.com/data")
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("Failed to fetch data")
+          }
+          return res.json()
+        })
+        .then((data) => Either.right(data)),
+    (error) => Either.left(error.message)
+  )
+}
+
+function DataFetcher() {
+  const [data, dataBox] = useRBox(() => Either.left("Loading..."))
+  const setData = set(dataBox)
+
+  const loadData = () => fetchDataTask().run().then(setData)
+
+  return (
+    <div>
+      <button onClick={loadData}>Load Data</button>
+      <div>
+        {data.match(
+          (error) => (
+            <p>Error: {error}</p>
+          ),
+          (data) => (
+            <p>Data: {JSON.stringify(data)}</p>
+          )
+        )}
+      </div>
+    </div>
+  )
+}
+
+export default DataFetcher
+```
+
+#### Explanation
+
+- `Task.tryCatch` wraps asynchronous operations and gracefully handles errors.
+- Successful results are wrapped in `Either.right`, while errors are wrapped in `Either.left`.
+- Changes in `dataBox` automatically propagate to the component using `useRBox`.
+
+---
+
+### 5. Global Reactive State Management
+
+Use `useRBox` to manage dynamic global state, such as themes and user settings, across an entire application.
+
+#### Code Example
+
+```tsx
+// globalState.ts
+import { RBox } from "f-box-core"
+
+// Define global states
+export const themeBox = RBox.pack("light")
+
+export const settingsBox = RBox.pack({
+  language: "en",
+  notificationsEnabled: true,
+})
+```
+
+```tsx
+// ThemeToggle.tsx
+import { useRBox, set } from "f-box-react"
+import { themeBox } from "./globalState"
+
+function ThemeToggle() {
+  const [theme, themeBox] = useRBox(themeBox)
+  const setTheme = set(themeBox)
+
+  const toggleTheme = () => setTheme(theme === "light" ? "dark" : "light")
+
+  return (
+    <div>
+      <p>Current Theme: {theme}</p>
+      <button onClick={toggleTheme}>
+        Switch to {theme === "light" ? "Dark" : "Light"} Mode
+      </button>
+    </div>
+  )
+}
+
+export default ThemeToggle
+```
+
+```tsx
+// SettingsManager.tsx
+import { useRBox, set } from "f-box-react"
+import { settingsBox } from "./globalState"
+
+function SettingsManager() {
+  const [settings, settingsBox] = useRBox(settingsBox)
+  const setSettings = set(settingsBox)
+
+  const toggleNotifications = () =>
+    setSettings({
+      ...settings,
+      notificationsEnabled: !settings.notificationsEnabled,
+    })
+
+  const changeLanguage = (lang: string) =>
+    setSettings({ ...settings, language: lang })
+
+  return (
+    <div>
+      <h2>App Settings</h2>
+      <p>Language: {settings.language}</p>
+      <button onClick={() => changeLanguage("en")}>English</button>
+      <button onClick={() => changeLanguage("ja")}>日本語</button>
+
+      <p>
+        Notifications: {settings.notificationsEnabled ? "Enabled" : "Disabled"}
+      </p>
+      <button onClick={toggleNotifications}>
+        {settings.notificationsEnabled ? "Disable" : "Enable"} Notifications
+      </button>
+    </div>
+  )
+}
+
+export default SettingsManager
+```
+
+```tsx
+// App.tsx
+import React from "react"
+import ThemeToggle from "./ThemeToggle"
+import SettingsManager from "./SettingsManager"
+
+function App() {
+  return (
+    <div>
+      <h1>Global State Management with useRBox</h1>
+      <ThemeToggle />
+      <SettingsManager />
+    </div>
+  )
+}
+
+export default App
+```
+
+---
+
+#### Explanation
+
+1. **Centralized State**:
+
+   - `themeBox` and `settingsBox` are defined as global `RBox` instances.
+   - These states are shared across the application and accessed via `useRBox`.
+
+2. **Reactive Updates**:
+
+   - Components use `useRBox` to consume and update global states reactively.
+   - Any updates using `set` are propagated to all dependent components automatically.
+
+3. **Separation of Concerns**:
+
+   - State definitions are centralized in a `globalState.ts` file.
+   - UI components like `ThemeToggle` and `SettingsManager` are clean and focused only on rendering and interacting with the states.
+
+4. **Practical Use**:
+   - **ThemeToggle**: Switches between light and dark modes globally.
+   - **SettingsManager**: Manages user preferences like language and notification settings.
+
+---
+
+## Best Practices
+
+1. **Focus on Reactive State**:
+   Use `useRBox` for dynamic states that require reactivity and real-time updates. For purely static values, use `useBox`.
+
+2. **Leverage Functional Operators**:
+   Use `<$>` for state transformations and `<*>` for combining states. These operators provide a clean, composable way to manage derived states.
+
+3. **Centralize Shared State**:
+   Place global `RBox` states in a dedicated file (e.g., `globalState.ts`) for consistency and modularity.
+
+4. **Avoid Direct Mutations**:
+   Use the curried `set` function to update `RBox` values, ensuring immutability and predictable updates.
+
+5. **Error Handling with `Either`**:
+   Pair `useRBox` with `Either` for declarative handling of success and error states, especially when dealing with asynchronous operations.
+
+6. **Split Large States**:
+   Avoid combining unrelated states into a single `RBox`. Instead, split large state objects into smaller, logical parts for better performance and maintainability.
+
+7. **Decouple Components**:
+   Keep components focused on rendering and interaction. State logic and management should be handled outside the UI components.
+
+---
+
+## Common Pitfalls
+
+1. **Overusing Dependency Arrays**:
+   Avoid manually managing `deps` (dependency arrays) in `useRBox`. Instead, use functional operators like `<$>` and `<*>` to express dependencies declaratively.
+
+2. **Duplicating Global State**:
+   Do not create multiple instances of the same global `RBox`. Always import the shared state from a single source.
+
+3. **Mutating Values Directly**:
+   Avoid directly mutating values inside an `RBox`. Use `set` or other functional transformations to update values reactively.
+
+4. **Overloading State**:
+   Avoid combining too many unrelated values into one `RBox`. It makes the state harder to manage and can cause unnecessary re-renders.
+
+5. **Ignoring Cleanup**:
+   While `useRBox` automatically handles subscriptions, ensure you clean up manually when directly using `RBox.subscribe`.
+
+---
+
+## Conclusion
+
+`useRBox` is a robust, declarative solution for managing reactive and dynamic states in React applications. It integrates seamlessly with F-Box abstractions, such as `Task` for asynchronous operations and `Either` for error handling. By leveraging `useRBox` and its functional operators, developers can build clean, scalable, and maintainable state management systems.
+
+---
+
+## Next Steps
+
+Explore related guides and references to deepen your understanding of F-Box:
+
+- **[useBox Guide](/f-box-react/guides/use-box)**: Manage static and derived values using `useBox`.
+- **[RBox API Reference](/f-box-core/reference/rbox)**: Learn more about the powerful `RBox` abstraction.
