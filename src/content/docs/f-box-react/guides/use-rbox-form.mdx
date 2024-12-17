@@ -1,6 +1,258 @@
 ---
 title: useRBoxForm Guide
-description: A guide to using the useRBoxForm hook in F-Box React.
+description: A comprehensive guide to using the useRBoxForm hook in F-Box, including form state management, validation, error handling, and advanced patterns.
 ---
 
-Content goes here...
+`useRBoxForm` is a React hook provided by F-Box that simplifies form state management. It integrates the reactive power of `RBox` with input validation, error handling, and utility functions to build clean and maintainable form logic.
+
+---
+
+## Why Choose `useRBoxForm`?
+
+`useRBoxForm` is designed for **dynamic and reactive forms** where validation, error handling, and state management are critical. It ensures:
+
+- **Reactive Form State**: Automatically updates the form state reactively as the user interacts.
+- **Built-in Validation**: Validate inputs dynamically with customizable rules.
+- **Error Management**: Dynamically render and manage error messages.
+- **Type-safe Implementation**: Provides strong TypeScript support for predictable and robust development.
+
+---
+
+## Key Benefits of `useRBoxForm`
+
+1. **Reactive Synchronization**: Form fields and validation errors are synchronized reactively.
+2. **Customizable Validation**: Define flexible rules for each input field.
+3. **Declarative Error Rendering**: Dynamically display error messages where needed.
+4. **Built-in Utilities**: Includes helper methods like `resetForm`, `markAllEdited`, and `handleValidatedSubmit`.
+
+---
+
+## Practical Use Cases
+
+### 1. Managing Form State and Validation
+
+Use `useRBoxForm` to manage form fields, handle input changes, and validate inputs dynamically.
+
+#### Code Example
+
+```tsx
+// BasicForm.tsx
+import { useRBoxForm } from "f-box-react"
+
+type Form = {
+  username: string
+  email: string
+}
+
+const initialValues: Form = { username: "", email: "" }
+
+const validate = (form: Form) => ({
+  username: [() => form.username.trim().length >= 3],
+  email: [() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)],
+})
+
+function BasicForm() {
+  const { form, handleChange, handleValidatedSubmit, renderErrorMessages } =
+    useRBoxForm<Form>(initialValues, validate)
+
+  const handleSubmit = handleValidatedSubmit((form) => {
+    alert(`Form Submitted: ${JSON.stringify(form, null, 2)}`)
+  })
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label>Username:</label>
+        <input
+          value={form.username}
+          onChange={(e) => handleChange("username", e.target.value)}
+        />
+        {renderErrorMessages("username", [
+          "Username must be at least 3 characters long.",
+        ])}
+      </div>
+
+      <div>
+        <label>Email:</label>
+        <input
+          value={form.email}
+          onChange={(e) => handleChange("email", e.target.value)}
+        />
+        {renderErrorMessages("email", ["Please enter a valid email address."])}
+      </div>
+
+      <button type="submit">Submit</button>
+    </form>
+  )
+}
+
+export default BasicForm
+```
+
+#### Explanation
+
+- **`initialValues`**: Defines the initial state of the form fields.
+- **`validate`**: Specifies validation rules for each field.
+- **`handleChange`**: Updates the value of a specific field reactively.
+- **`renderErrorMessages`**: Dynamically displays error messages for a field.
+- **`handleValidatedSubmit`**: Ensures the form passes validation before submission.
+
+---
+
+### 2. Managing Advanced Validation Rules
+
+Combine multiple validation rules for a field, and dynamically render error messages based on failed rules.
+
+#### Code Example
+
+```tsx
+// AdvancedValidationForm.tsx
+import { useRBoxForm } from "f-box-react"
+
+type Form = {
+  password: string
+}
+
+const initialValues: Form = { password: "" }
+
+const validate = (form: Form) => ({
+  password: [
+    () => form.password.length >= 8, // Minimum length
+    () => /[A-Z]/.test(form.password), // At least one uppercase letter
+    () => /[0-9]/.test(form.password), // At least one number
+  ],
+})
+
+function AdvancedValidationForm() {
+  const { form, handleChange, handleValidatedSubmit, renderErrorMessages } =
+    useRBoxForm<Form>(initialValues, validate)
+
+  const handleSubmit = handleValidatedSubmit(() => {
+    alert("Password is valid!")
+  })
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        Password:
+        <input
+          type="password"
+          value={form.password}
+          onChange={(e) => handleChange("password", e.target.value)}
+        />
+        {renderErrorMessages("password", [
+          "Password must be at least 8 characters long.",
+          "Password must contain at least one uppercase letter.",
+          "Password must contain at least one number.",
+        ])}
+      </label>
+      <button type="submit">Submit</button>
+    </form>
+  )
+}
+
+export default AdvancedValidationForm
+```
+
+---
+
+### 3. Resetting and Marking All Fields
+
+Use built-in helper methods like `resetForm` and `markAllEdited` to reset or mark form fields as edited.
+
+#### Code Example
+
+```tsx
+// ResetFormExample.tsx
+import { useRBoxForm } from "f-box-react"
+
+type Form = {
+  firstName: string
+  lastName: string
+}
+
+const initialValues: Form = { firstName: "", lastName: "" }
+
+function ResetFormExample() {
+  const { form, handleChange, resetForm, markAllEdited } = useRBoxForm<Form>(
+    initialValues,
+    () => ({})
+  )
+
+  return (
+    <form>
+      <div>
+        <label>First Name:</label>
+        <input
+          value={form.firstName}
+          onChange={(e) => handleChange("firstName", e.target.value)}
+        />
+      </div>
+      <div>
+        <label>Last Name:</label>
+        <input
+          value={form.lastName}
+          onChange={(e) => handleChange("lastName", e.target.value)}
+        />
+      </div>
+      <button type="button" onClick={resetForm}>
+        Reset
+      </button>
+      <button type="button" onClick={markAllEdited}>
+        Mark All Edited
+      </button>
+    </form>
+  )
+}
+
+export default ResetFormExample
+```
+
+#### Explanation
+
+- **`resetForm`**: Resets all fields to their initial values.
+- **`markAllEdited`**: Marks all fields as "edited" to trigger validation or visual updates.
+
+---
+
+## Best Practices
+
+1. **Centralize Validation Rules**:
+   Define validation rules in a separate function to keep them clean and maintainable.
+
+2. **Leverage Helper Methods**:
+   Use `resetForm` and `markAllEdited` to improve form management and user experience.
+
+3. **Display Validation Errors Declaratively**:
+   Use `renderErrorMessages` to dynamically show relevant error messages.
+
+4. **Focus on Type Safety**:
+   Always use TypeScript for `useRBoxForm` to ensure type safety and predictable behavior.
+
+---
+
+## Common Pitfalls
+
+1. **Overcomplicating Validation**:
+   Avoid writing overly complex validation rules within the form component. Use a separate function.
+
+2. **Not Using `resetForm`**:
+   If a form needs to be reset frequently, make sure to use `resetForm` for cleaner code.
+
+3. **Ignoring Initial State**:
+   Always define meaningful `initialValues` to avoid uncontrolled field behavior.
+
+---
+
+## Conclusion
+
+`useRBoxForm` is a powerful and declarative solution for managing forms in React applications. By leveraging F-Box's functional programming features, such as reactive state synchronization, flexible validation, and error handling, developers can build clean, maintainable, and user-friendly form components. Whether you are managing form submissions, validations, or error rendering, `useRBoxForm` seamlessly integrates into your React projects to simplify form state management.
+
+---
+
+## Next Steps
+
+Explore related guides and references to deepen your understanding of F-Box:
+
+- **[useBox Guide](/f-box-react/guides/use-box)**: Manage static and derived state efficiently using `useBox`.
+- **[useRBox Guide](/f-box-react/guides/use-rbox)**: Dive into reactive and dynamic state management with `useRBox`.
