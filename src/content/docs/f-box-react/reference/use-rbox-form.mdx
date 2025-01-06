@@ -14,6 +14,7 @@ The `useRBoxForm` hook allows you to manage form state reactively, validate inpu
 - **Reactive Form State**: Automatically synchronize form fields and validation state.
 - **Built-in Validation**: Simplify input validation with flexible rules.
 - **Error Rendering**: Dynamically render error messages for invalid fields.
+- **Async Submission Handling**: Track the pending state of asynchronous submissions with `isPending`.
 - **Type Safety**: Provides strong TypeScript support for predictable development.
 
 ---
@@ -50,10 +51,16 @@ const validate = (form: Form) => ({
 })
 
 function ContactForm() {
-  const { form, handleChange, handleValidatedSubmit, renderErrorMessages } =
-    useRBoxForm<Form>(initialValues, validate)
+  const {
+    form,
+    isPending,
+    handleChange,
+    handleValidatedSubmit,
+    renderErrorMessages,
+  } = useRBoxForm<Form>(initialValues, validate)
 
-  const handleSubmit = handleValidatedSubmit((form) => {
+  const handleSubmit = handleValidatedSubmit(async (form) => {
+    await new Promise((resolve) => setTimeout(resolve, 2000)) // Simulating async operation
     alert(`Form submitted successfully!\n${JSON.stringify(form, null, 2)}`)
   })
 
@@ -88,7 +95,9 @@ function ContactForm() {
           "Message must be at least 10 characters.",
         ])}
       </label>
-      <button type="submit">Submit</button>
+      <button type="submit" disabled={isPending}>
+        {isPending ? "Submitting..." : "Submit"}
+      </button>
     </form>
   )
 }
@@ -120,6 +129,25 @@ const validate = (form: Form) => ({
 }
 ```
 
+### Async Submission with `isPending`
+
+The `isPending` property indicates whether an asynchronous operation is in progress. You can use it to disable buttons or show loading indicators during submission.
+
+```tsx
+const { isPending, handleValidatedSubmit } = useRBoxForm(
+  initialValues,
+  validate
+)
+
+const handleSubmit = handleValidatedSubmit(async (form) => {
+  await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulating async operation
+})
+
+;<button onClick={handleSubmit} disabled={isPending}>
+  {isPending ? "Submitting..." : "Submit"}
+</button>
+```
+
 ### Resetting and Marking Fields
 
 - **`resetForm`**: Resets the form to its initial state.
@@ -140,7 +168,7 @@ const { resetForm, markAllEdited } = useRBoxForm(initialValues, validate);
 
 #### `useRBoxForm<T>(initialValues: T, validate: (form: T) => Validation<T>): UseRBoxFormResult<T>`
 
-Creates a reactive form state with validation rules.
+Creates a reactive form state with validation rules and tracks async submission state.
 
 #### Parameters
 
@@ -153,6 +181,8 @@ Creates a reactive form state with validation rules.
 
 - **`form`**:
   - The current form state.
+- **`isPending`**:
+  - A boolean indicating whether an asynchronous submission is in progress.
 - **`handleChange`**:
   - Updates the value of a specific field and marks it as edited.
 - **`handleValidatedSubmit`**:
@@ -168,7 +198,7 @@ Creates a reactive form state with validation rules.
 
 ## Why Use `useRBoxForm`?
 
-The `useRBoxForm` hook combines F-Box's reactive state management with powerful validation and error handling capabilities. It simplifies form handling in React applications, ensuring clean, type-safe, and maintainable code.
+With the addition of `isPending`, `useRBoxForm` now handles both reactive state management and async submission handling. It simplifies form handling in React applications while maintaining clean, type-safe, and maintainable code.
 
 ---
 
