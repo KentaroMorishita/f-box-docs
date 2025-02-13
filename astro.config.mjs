@@ -2,12 +2,32 @@ import { defineConfig } from "astro/config"
 import starlight from "@astrojs/starlight"
 
 export default defineConfig({
+  site: "https://f-box-docs.com",
   integrations: [
     starlight({
       title: "F-Box",
       social: {
         github: "https://github.com/KentaroMorishita/f-box-core",
       },
+      head: [
+        { tag: "meta", attrs: { property: "og:title", content: "F-Box" } },
+        {
+          tag: "meta",
+          attrs: {
+            property: "og:description",
+            content:
+              "Explore the power of F-Box for functional programming and reactive state management.",
+          },
+        },
+        {
+          tag: "meta",
+          attrs: {
+            property: "og:image",
+            content: "https://f-box-docs.com/ogp/f-box-logo.png",
+          },
+        },
+        { tag: "meta", attrs: { property: "og:type", content: "website" } },
+      ],
       sidebar: [
         {
           label: "F-Box",
